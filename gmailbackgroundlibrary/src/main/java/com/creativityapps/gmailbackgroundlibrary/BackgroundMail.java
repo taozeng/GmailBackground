@@ -292,10 +292,12 @@ public class BackgroundMail {
         protected void onPreExecute() {
             super.onPreExecute();
             if (processVisibility) {
-                progressDialog = new ProgressDialog(mContext);
-                progressDialog.setMessage(sendingMessage);
-                progressDialog.setCancelable(false);
-                progressDialog.show();
+                if (!TextUtils.isEmpty(sendingMessage)) {
+                    progressDialog = new ProgressDialog(mContext);
+                    progressDialog.setMessage(sendingMessage);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                }
             }
         }
 
@@ -322,7 +324,9 @@ public class BackgroundMail {
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
             if (processVisibility) {
-                progressDialog.dismiss();
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
                 if (result) {
                     if (!TextUtils.isEmpty(sendingMessageSuccess)) {
                         Toast.makeText(mContext, sendingMessageSuccess, Toast.LENGTH_SHORT).show();
